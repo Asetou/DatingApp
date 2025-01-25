@@ -13,5 +13,4 @@ export const authGuard: CanActivateFn = (route, state) => {
     toastr.error("You shall not pass!");
     return false;
   }
-  return true;
 };

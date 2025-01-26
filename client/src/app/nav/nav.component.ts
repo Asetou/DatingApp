@@ -14,7 +14,7 @@ import { TitleCasePipe } from '@angular/common';
 })
 export class NavComponent {
   accountService = inject(AccountService);
-  private router = inject(Router);
+  private router = inject(Router)
   private toastr = inject(ToastrService);
   loggedIn = false;
   model: any = {};

@@ -48,21 +48,20 @@ public class AccountController(DataContext context, ITokenService tokenService, 
     [HttpPost("login")]
     public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
     {
-        var user = await context.Users.FirstOrDefaultAsync(
-            x => x.UserName == loginDTO.Username.ToLower()
-        );
+        var user = await context.Users
+            .Include(p => p.Photos)
+                .FirstOrDefaultAsync(x =>
+                    x.UserName == loginDTO.Username.ToLower());
 
         if (user == null) return Unauthorized("Invalid username");
 
-        // password verifier
-
         using var hmac = new HMACSHA512(user.PasswordSalt);
 
-        var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDTO.Password));
 
-        for (int i = 0; i < computeHash.Length; i++)
+        for (int i = 0; i < computedHash.Length; i++)
         {
-            if (computeHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
+            if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
         }
 
         return new UserDTO

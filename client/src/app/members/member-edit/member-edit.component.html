@@ -36,12 +36,12 @@
         <div>
           <strong
             >Last Active:
-            <p>{{ member.lastActive }}</p>
+            <p>{{ member.lastActive | timeago}}</p>
           </strong>
         </div>
         <div>
           <strong>Member Since:</strong>
-          <p>{{ member.created }}</p>
+          <p>{{ member.created | date: "longDate"}}</p>
         </div>
       </div>
 

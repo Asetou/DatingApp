@@ -22,7 +22,7 @@ public class UsersController(IUserRepository userRepository, IMapper mapper, IPh
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers([FromQuery]UserParams userParams)
     {
-
+        userParams.CurrentUsername = User.GetUsername();
         var users = await userRepository.GetMembersAync(userParams);
 
         Response. AddPaginationHeader(users);

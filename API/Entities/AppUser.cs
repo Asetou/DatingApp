@@ -12,7 +12,7 @@ public class AppUser
 
     public byte[] PasswordSalt { get; set; } = [];
 
-    public DateOnly DateOfBirth {get; set; }
+    public DateOnly DateOfBirth { get; set; }
 
     public required string KnownAs { get; set; }
 
@@ -33,9 +33,6 @@ public class AppUser
     public required string Country { get; set; }
 
     public List<Photo> Photos { get; set; } = [];
-    
-
-    // public int GetAge(){
-    //     return DateOfBirth.CalculateAge();
-    // }
+    public List<UserLike> LikedByUsers { get; set; } = [];
+    public List<UserLike> LikedUsers { get; set; } = [];
 }

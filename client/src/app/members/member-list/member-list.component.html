@@ -72,7 +72,7 @@
 <div class="row">
   <div class="text-center mt-3">
     <h2>
-      Your matches -
+      Your Health Care Professionals -
       {{ memberService.paginatedResult()?.pagination?.totalItems }}
     </h2>
   </div>
@@ -89,7 +89,7 @@
   <pagination
     [boundaryLinks]="true"
     [totalItems]="(memberService.paginatedResult()?.pagination)!.totalItems"
-    [itemsPerPage]="(memberService.paginatedResult()?.pagination)!.itemPerPage"
+    [itemsPerPage]="(memberService.paginatedResult()?.pagination)!.itemsPerPage"
     (pageChanged)="pageChanged($event)"
     [(ngModel)]="memberService.paginatedResult()?.pagination!.currentPage"
     [maxSize]="10"

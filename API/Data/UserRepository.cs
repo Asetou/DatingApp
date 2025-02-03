@@ -1,4 +1,4 @@
-using System;
+using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Helpers;
@@ -7,7 +7,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Data;
+namespace API;
 
 public class UserRepository(DataContext context, IMapper mapper) : IUserRepository
 {
@@ -19,16 +19,21 @@ public class UserRepository(DataContext context, IMapper mapper) : IUserReposito
             .SingleOrDefaultAsync();
     }
 
-    public async Task<PagedList<MemberDTO>> GetMembersAync(UserParams userParams)
+    public async Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams)
     {
         var query = context.Users.AsQueryable();
 
         query = query.Where(x => x.UserName != userParams.CurrentUsername);
 
-        if (userParams.Gender != null)
+        if (userParams.Gender != null) 
         {
             query = query.Where(x => x.Gender == userParams.Gender);
         }
+
+        var minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MaxAge-1));
+        var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MinAge));
+
+        query = query.Where(x => x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob);
 
         query = userParams.OrderBy switch
         {
@@ -36,14 +41,9 @@ public class UserRepository(DataContext context, IMapper mapper) : IUserReposito
             _ => query.OrderByDescending(x => x.LastActive)
         };
 
-        var minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MaxAge - 1));
-        var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MinAge));
-
-        query = query.Where(x => x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob);
-
-        return await PagedList<MemberDTO>.CreateAsync(query.ProjectTo<MemberDTO>(mapper.ConfigurationProvider),
-        userParams.PageNumber,
-        userParams.PageSize);
+        return await PagedList<MemberDTO>.CreateAsync(query.ProjectTo<MemberDTO>(mapper.ConfigurationProvider), 
+            userParams.PageNumber, userParams.PageSize);
+            
     }
 
     public async Task<AppUser?> GetUserByIdAsync(int id)
@@ -54,15 +54,15 @@ public class UserRepository(DataContext context, IMapper mapper) : IUserReposito
     public async Task<AppUser?> GetUserByUsernameAsync(string username)
     {
         return await context.Users
-        .Include(x => x.Photos)
-        .SingleOrDefaultAsync(x => x.UserName == username);
+            .Include(x => x.Photos)
+            .SingleOrDefaultAsync(x => x.UserName == username);
     }
 
     public async Task<IEnumerable<AppUser>> GetUsersAsync()
     {
         return await context.Users
-        .Include(x => x.Photos)
-        .ToListAsync();
+            .Include(x => x.Photos)
+            .ToListAsync();
     }
 
     public async Task<bool> SaveAllAsync()
@@ -70,7 +70,7 @@ public class UserRepository(DataContext context, IMapper mapper) : IUserReposito
         return await context.SaveChangesAsync() > 0;
     }
 
-    public void update(AppUser user)
+    public void Update(AppUser user)
     {
         context.Entry(user).State = EntityState.Modified;
     }

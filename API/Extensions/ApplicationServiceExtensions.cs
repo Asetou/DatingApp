@@ -27,6 +27,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ILikesRepository, LikesRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPhotoService, PhotoService>();
         services.AddScoped<IMessageRepository, MessageRepository>();
         services.AddScoped<LogUserActivity>();
@@ -35,7 +36,7 @@ public static class ApplicationServiceExtensions
 
         services.AddSignalR();
         services.AddSingleton<PresenceTracker>();
-        
+
         return services;
     }
 }

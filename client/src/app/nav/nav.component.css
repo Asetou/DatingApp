@@ -1,9 +1,12 @@
-.dropdown-toggle, .dropdown-item {
-    cursor: pointer;
+.mdn-navbar {
+  background: linear-gradient(90deg, #e90b0b, #2813e2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-img {
-    max-height: 50px;
-    border: 2px solid white;
-    display: inline;
+.mdn-dropdown .dropdown-toggle::after {
+  margin-left: 0.5rem;
+}
+
+.user-avatar {
+  object-fit: cover;
 }

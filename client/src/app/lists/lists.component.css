@@ -1,0 +1,25 @@
+/* Use a modern, clean font and color palette if not already defined globally */
+body {
+    font-family: 'Roboto', 'Open Sans', sans-serif;
+    background-color: #f9f9f9;
+  }
+  
+  /* Title styling */
+  h2 {
+    color: #333;
+    letter-spacing: 0.05rem;
+  }
+  
+  /* Button hover effects for a subtle modern touch */
+  .btn {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .btn:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Optional: Adjust the card grid gap */
+  .row.gy-3 {
+    row-gap: 1.5rem !important;
+  }
+  

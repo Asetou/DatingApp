@@ -1,15 +1,30 @@
-.img-thumbnail{
-    margin: 25px;
-    width: 85%;
-    height: 85%;
+body {
+  font-family: "Roboto", "Open Sans", sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
-.card-body{
-    padding: 0 25px;
+.card {
+  border-radius: 0.5rem;
 }
 
-.card-footer{
-    padding: 10px 15px;
-    background-color: white;
-    border-top: none;
+.card-body {
+  padding: 1.5rem;
+}
+.card-footer {
+  padding: 1rem;
+  background-color: #fff;
+  border-top: none;
+}
+
+.img-thumbnail {
+  display: none;
+}
+
+.member-tabset {
+  margin-top: 1rem;
+}
+
+.btn-group {
+  gap: 0.5rem;
 }

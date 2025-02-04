@@ -28,9 +28,7 @@ public class UsersController(IUnitOfWork unitOfWork, IMapper mapper,
     [HttpGet("{username}")]  // /api/users/2
     public async Task<ActionResult<MemberDTO>> GetUser(string username)
     {
-        var currentUsername = User.GetUsername();
-        var user = await unitOfWork.UserRepository.GetMemberAsync(username, 
-            isCurrentUser: currentUsername == username);
+        var user = await unitOfWork.UserRepository.GetMemberAsync(username);
 
         if (user == null) return NotFound();
 
@@ -68,6 +66,8 @@ public class UsersController(IUnitOfWork unitOfWork, IMapper mapper,
             PublicId = result.PublicId
         };
 
+        if (user.Photos.Count == 0) photo.IsMain = true;
+
         user.Photos.Add(photo);
 
         if (await unitOfWork.Complete()) 
@@ -104,7 +104,7 @@ public class UsersController(IUnitOfWork unitOfWork, IMapper mapper,
 
         if (user == null) return BadRequest("User not found");
 
-        var photo = await unitOfWork.PhotoRepository.GetPhotoById(photoId);
+        var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
 
         if (photo == null || photo.IsMain) return BadRequest("This photo cannot be deleted");
 
